@@ -63,7 +63,7 @@ let obj1 ={
   }
 }
 
-let obj2 = obj1;
+let obj2 = obj1;                       //No new object is created ,obj2 just points to the same memory location as obj1 , This is called reference copying
 console.log(obj1);
 console.log(obj2);
 
@@ -73,6 +73,23 @@ obj2.address.postaladd.pincode = 804453
 console.log(obj1);
 console.log(obj2);
 //here what we are seeing like by changing in obj2 , changes also reflect in obj1 how?
+//there are three ways to solve this problem like
+// let obj2 = { ...obj1 }; i.e. spread opertor   => sallow copy => copy at first level
+// let obj2 = JSON.parse(JSON.stringify(obj1));   i.e. stringinfy => deep copy but limited means it does not function,undefined,symbole,data,map/set
+// and third will be using structuredClone() method => deep copy
+
+//26 Feb 2026
+
+let user1 = new Object(obj1);  // it is same as line no. 66 but it is used generally to make empty object
+console.log(user1);
+user1.address.country = "brazil"
+user1.address.postaladd.pincode = 12345
+
+console.log(obj1);
+console.log(user1);
+
+
+
 
 
 

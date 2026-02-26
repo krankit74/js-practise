@@ -1,0 +1,21 @@
+#coin_container {
+  width: 800px;
+  height: 500px;
+  border: 2px solid black;
+  position: relative;
+  overflow: hidden;
+  background-color: grey;
+}
+
+.coin {
+  width: 30px;
+  height: 30px;
+  background-color: purple;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.player {
+    width: 50px;
+    height: 50px;
+}
