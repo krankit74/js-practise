@@ -34,3 +34,60 @@ for (let i = 0; i < coin_count; i++) {
   player.style.top = `${p}px`;
 
   coin_container.appendChild(player);
+
+
+  const speed = 10; // move 10px each time when key is press
+
+  let playerX = z;   //to track player position
+  let playerY = p;
+
+  document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp")  {
+        playerY = playerY-speed;
+      }
+
+      if (e.key === "ArrowDown") {
+        playerY = playerY + speed;
+      }
+
+      if (e.key === "ArrowLeft") {
+        playerX = playerX - speed;
+      }
+
+      if (e.key === "ArrowRight") {
+        playerX = playerX + speed;
+      }
+      // boundary check for the players 
+      playerX = Math.max(0, Math.min(width - player_size, playerX));
+      playerY = Math.max(0, Math.min(height - player_size, playerY));
+
+      // Apply new position
+      player.style.left = `${playerX}px`;
+      player.style.top = `${playerY}px`;
+
+
+      const coins = document.querySelectorAll(".coin");
+
+      coins.forEach((coin) => {
+      const coinX = parseFloat(coin.style.left);
+      const coinY = parseFloat(coin.style.top);
+    
+      if (isColliding(playerX, playerY, player_size, coinX, coinY, coin_size)) {
+        console.log("Coin collected!");
+
+        coin.remove();
+      }
+      });
+  })
+
+
+
+// logic to check to the collision
+  function isColliding(px, py, pSize, cx, cy, cSize) {
+  return !(
+    px + pSize < cx ||      // player is left of coin
+    px > cx + cSize ||      // player is right of coin
+    py + pSize < cy ||      // player is above coin
+    py > cy + cSize         // player is below coin
+  );
+}
