@@ -1,6 +1,7 @@
 const cells = document.querySelectorAll(".cell");
 let turn = 0;
 let currentPlayer = "X";
+let timeout;
 
 
 const winPatterns = [
@@ -24,11 +25,14 @@ cells.forEach((cell) => {
     cell.style.color = "olive";
 
     checkWinner();
+    
     checkDraw();
     turn = 1;
 
-   setTimeout(computerturn, 3000);
-    
+//    console.log("hi");
+   
+   timeout = setTimeout(computerturn, 3000);
+   
 
   });
 });
@@ -46,17 +50,59 @@ function computerturn() {
     });
 
     if(empty.length === 0) return;
+     
+    // console.log(`computerturn`);
     
-    let randomIndex = Math.floor(Math.random() * empty.length);
+    //block the user
+    let blockIndex = BlockingMove();
 
-    let choice = empty[randomIndex];
-     if(turn != 1)  return;
+    let choice;
+
+    if(blockIndex !== -1){
+        choice = blockIndex;
+    } else {
+        let randomIndex = Math.floor(Math.random()*empty.length);
+        choice = empty[randomIndex];
+    }
+
     cells[choice].innerText = "O"
     cells[choice].style.color = "purple";
 
     checkWinner();
     checkDraw();
     turn=0;
+}
+
+function BlockingMove(){
+
+    for(let i of winPatterns){
+
+        let a = i[0];
+        let b = i[1];
+        let c = i[2];
+
+        let valA = cells[a].innerText;
+        let valB = cells[b].innerText;
+        let valC = cells[c].innerText;
+
+        // X X _
+        if(valA === "X" && valB === "X" && valC === ""){
+            return c;
+        }
+
+        // X _ X
+        if(valA === "X" && valC === "X" && valB === ""){
+            return b;
+        }
+
+        // _ X X
+        if(valB === "X" && valC === "X" && valA === ""){
+            return a;
+        }
+
+    }
+
+    return -1;
 }
 
 function checkWinner(){
@@ -69,6 +115,12 @@ function checkWinner(){
         
 
         if(a !== "" && a === b && b === c){
+            console.log(`yha se`);
+            
+            clearTimeout(timeout);
+
+            console.log(`yaha tak`);
+            
             cells.innerText = b;
             alert(a + " Wins!");
             resetGame();
@@ -90,6 +142,7 @@ function checkDraw(){
     });
 
     if(isDraw){
+        clearTimeout(timeout);
         alert("Game Draw");
         resetGame();
     }
