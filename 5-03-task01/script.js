@@ -22,17 +22,23 @@ cells.forEach((cell) => {
    
     if (cell.innerText !== "") return;
     cell.innerText = "X";
-    cell.style.color = "olive";
+    cell.style.color = "black";
 
-    checkWinner();
-    
-    checkDraw();
+    /*checkWinner();
+    checkDraw();                             // previoulsy problem was occured because of we are returing the either ture or false 
+    turn = 1;
+    timeout = setTimeout(computerturn, 3000);*/    
+   
+
+
+    if(checkWinner()) return;             //now it will check either the checkwinner is true or false , on the baisc of that forward execution can go on
+
+    if(checkDraw()) return;
+
     turn = 1;
 
-//    console.log("hi");
-   
-   timeout = setTimeout(computerturn, 3000);
-   
+    timeout = setTimeout(computerturn, 3000);
+
 
   });
 });
@@ -115,20 +121,18 @@ function checkWinner(){
         
 
         if(a !== "" && a === b && b === c){
-            console.log(`yha se`);
-            
-            clearTimeout(timeout);
 
-            console.log(`yaha tak`);
+            clearTimeout(timeout);
             
             cells.innerText = b;
             alert(a + " Wins!");
             resetGame();
-            return;
+
+            return true;
         }
     }
 
-    checkDraw();
+    return false;
 }
 
 function checkDraw(){
@@ -145,7 +149,11 @@ function checkDraw(){
         clearTimeout(timeout);
         alert("Game Draw");
         resetGame();
+
+        return true;
     }
+
+    return false;
 
 }
 
